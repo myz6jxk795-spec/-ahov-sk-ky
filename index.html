@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Databáza ťahových skúšok materiálov</title>
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --card: #ffffff;
+      --text: #172033;
+      --muted: #667085;
+      --primary: #2457a6;
+      --primary-dark: #173b73;
+      --accent: #f2a93b;
+      --line: #d9e2ef;
+      --success: #20a67a;
+      --danger: #d64545;
+      --shadow: 0 18px 45px rgba(23, 32, 51, 0.10);
+      --radius: 22px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Inter, Segoe UI, Roboto, Arial, sans-serif;
+      background: radial-gradient(circle at top left, #e7eefb 0, transparent 34%), var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .page {
+      min-height: 100vh;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(16px);
+      background: rgba(244, 247, 251, 0.86);
+      border-bottom: 1px solid rgba(217, 226, 239, 0.75);
+    }
+
+    .nav {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 0;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      color: white;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      box-shadow: 0 10px 24px rgba(36, 87, 166, 0.28);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 650;
+    }
+
+    .nav-links a:hover {
+      color: var(--primary);
+    }
+
+    .btn {
+      border: 0;
+      cursor: pointer;
+      border-radius: 999px;
+      padding: 12px 18px;
+      font-weight: 750;
+      font-size: 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      box-shadow: 0 12px 25px rgba(36, 87, 166, 0.24);
+    }
+
+    .btn-light {
+      background: #fff;
+      color: var(--primary);
+      border: 1px solid var(--line);
+    }
+
+    main {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .hero {
+      padding: 76px 0 54px;
+      display: grid;
+      grid-template-columns: 1.08fr 0.92fr;
+      gap: 42px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--primary);
+      font-weight: 750;
+      font-size: 13px;
+      margin-bottom: 20px;
+      box-shadow: 0 10px 26px rgba(23, 32, 51, 0.06);
+    }
+
+    h1 {
+      font-size: clamp(38px, 6vw, 68px);
+      line-height: 0.98;
+      letter-spacing: -0.065em;
+      margin-bottom: 22px;
+    }
+
+    .hero p {
+      font-size: 18px;
+      color: var(--muted);
+      max-width: 620px;
+      margin-bottom: 28px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .hero-card {
+      background: rgba(255, 255, 255, 0.88);
+      border: 1px solid rgba(217, 226, 239, 0.9);
+      border-radius: 32px;
+      padding: 24px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-card::before {
+      content: "";
+      position: absolute;
+      inset: -90px -90px auto auto;
+      width: 220px;
+      height: 220px;
+      background: radial-gradient(circle, rgba(242, 169, 59, 0.28), transparent 68%);
+    }
+
+    .chart-card {
+      border-radius: 24px;
+      background: #101828;
+      padding: 18px;
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .chart-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+    }
+
+    .dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .dots span {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.35);
+    }
+
+    .mini-chart {
+      width: 100%;
+      aspect-ratio: 1.58;
+      border-radius: 18px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
+      border: 1px solid rgba(255,255,255,0.12);
+      padding: 18px;
+    }
+
+    .grid-lines {
+      height: 100%;
+      background-image: linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px);
+      background-size: 25% 25%;
+      border-radius: 12px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .curve {
+      position: absolute;
+      left: 7%;
+      bottom: 13%;
+      width: 82%;
+      height: 70%;
+      border-left: 4px solid transparent;
+    }
+
+    .curve svg {
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+
+    .metric-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .metric {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 14px;
+    }
+
+    .metric small {
+      display: block;
+      color: var(--muted);
+      font-weight: 700;
+      font-size: 12px;
+    }
+
+    .metric strong {
+      display: block;
+      font-size: 22px;
+      margin-top: 4px;
+      letter-spacing: -0.04em;
+    }
+
+    section {
+      padding: 34px 0;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .section-head h2 {
+      font-size: clamp(28px, 4vw, 42px);
+      line-height: 1.08;
+      letter-spacing: -0.05em;
+    }
+
+    .section-head p {
+      color: var(--muted);
+      max-width: 560px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: 0 12px 28px rgba(23, 32, 51, 0.06);
+    }
+
+    .icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      color: white;
+      background: linear-gradient(135deg, var(--primary), #5d85d6);
+      margin-bottom: 16px;
+      font-size: 21px;
+    }
+
+    .card h3 {
+      font-size: 18px;
+      margin-bottom: 8px;
+      letter-spacing: -0.02em;
+    }
+
+    .card p {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .database-panel {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 30px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .toolbar {
+      display: grid;
+      grid-template-columns: 1fr 160px 160px auto;
+      gap: 12px;
+      padding: 18px;
+      border-bottom: 1px solid var(--line);
+      background: #fbfcff;
+    }
+
+    input, select {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px 14px;
+      font: inherit;
+      outline: none;
+      background: white;
+      color: var(--text);
+    }
+
+    input:focus, select:focus {
+      border-color: rgba(36, 87, 166, 0.55);
+      box-shadow: 0 0 0 4px rgba(36, 87, 166, 0.08);
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 900px;
+    }
+
+    th, td {
+      padding: 16px 18px;
+      text-align: left;
+      border-bottom: 1px solid var(--line);
+      white-space: nowrap;
+    }
+
+    th {
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      background: #fbfcff;
+    }
+
+    td {
+      font-size: 14px;
+      font-weight: 620;
+    }
+
+    .material {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 5px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      background: #eef4ff;
+      color: var(--primary);
+    }
+
+    .badge.green {
+      background: #e9f8f2;
+      color: #13795b;
+    }
+
+    .badge.orange {
+      background: #fff4df;
+      color: #9b5d00;
+    }
+
+    .upload-zone {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .dropbox {
+      background: white;
+      border: 2px dashed #b9c7dc;
+      border-radius: 30px;
+      padding: 34px;
+      text-align: center;
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .dropbox:hover {
+      border-color: var(--primary);
+      background: #fbfcff;
+    }
+
+    .drop-icon {
+      width: 70px;
+      height: 70px;
+      border-radius: 24px;
+      display: grid;
+      place-items: center;
+      margin: 0 auto 18px;
+      background: linear-gradient(135deg, #eef4ff, #fff4df);
+      font-size: 32px;
+    }
+
+    .dropbox h3 {
+      font-size: 24px;
+      letter-spacing: -0.04em;
+      margin-bottom: 8px;
+    }
+
+    .dropbox p {
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+
+    .file-list {
+      background: #101828;
+      color: white;
+      border-radius: 30px;
+      padding: 24px;
+    }
+
+    .file-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .file-item:last-child {
+      border-bottom: 0;
+    }
+
+    .file-item span {
+      color: rgba(255,255,255,0.68);
+      font-size: 13px;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr 0.8fr;
+      gap: 16px;
+    }
+
+    .media {
+      min-height: 220px;
+      border-radius: 28px;
+      overflow: hidden;
+      position: relative;
+      background: linear-gradient(135deg, #dce8f8, #ffffff);
+      border: 1px solid var(--line);
+      box-shadow: 0 12px 28px rgba(23, 32, 51, 0.06);
+    }
+
+    .media.big {
+      grid-row: span 2;
+      min-height: 456px;
+    }
+
+    .media::before {
+      content: "";
+      position: absolute;
+      inset: 22px;
+      border-radius: 22px;
+      border: 1px solid rgba(36, 87, 166, 0.18);
+      background: linear-gradient(135deg, rgba(36,87,166,0.10), rgba(242,169,59,0.10));
+    }
+
+    .media-label {
+      position: absolute;
+      left: 18px;
+      bottom: 18px;
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .footer-cta {
+      margin: 40px 0 58px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      border-radius: 34px;
+      padding: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      box-shadow: 0 22px 48px rgba(36, 87, 166, 0.25);
+    }
+
+    .footer-cta h2 {
+      font-size: clamp(26px, 4vw, 40px);
+      line-height: 1.1;
+      letter-spacing: -0.05em;
+    }
+
+    .footer-cta p {
+      color: rgba(255,255,255,0.78);
+      max-width: 640px;
+      margin-top: 8px;
+    }
+
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 26px 0;
+      color: var(--muted);
+      font-size: 14px;
+      text-align: center;
+    }
+
+    @media (max-width: 980px) {
+      .hero,
+      .upload-zone {
+        grid-template-columns: 1fr;
+      }
+
+      .cards {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .toolbar {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .gallery {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .media.big {
+        grid-column: 1 / -1;
+        min-height: 320px;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .nav-links {
+        display: none;
+      }
+
+      .cards,
+      .toolbar,
+      .gallery,
+      .metric-row {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        padding-top: 48px;
+      }
+
+      .section-head,
+      .footer-cta {
+        align-items: start;
+        flex-direction: column;
+      }
+
+      .dropbox,
+      .footer-cta {
+        padding: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <nav class="nav">
+        <a href="#" class="brand" aria-label="Domov">
+          <span class="brand-mark">σ</span>
+          <span>MaterialLab DB</span>
+        </a>
+        <div class="nav-links">
+          <a href="#databaza">Databáza</a>
+          <a href="#nahravanie">Nahrávanie</a>
+          <a href="#media">Fotky a videá</a>
+          <a href="#" class="btn btn-primary">Pridať skúšku</a>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div>
+          <div class="eyebrow">⚙️ Databáza materiálových charakteristík</div>
+          <h1>Prehľadné výsledky ťahových skúšok na jednom mieste.</h1>
+          <p>
+            Webová databáza pre ukladanie Excel súborov, fotografií, videí a vyhodnotených údajov zo skúšok materiálov. Vhodná pre PLA, PETG, oceľ, hliník a ďalšie vzorky.
+          </p>
+          <div class="hero-actions">
+            <a href="#nahravanie" class="btn btn-primary">Nahrať nové dáta</a>
+            <a href="#databaza" class="btn btn-light">Pozrieť databázu</a>
+          </div>
+        </div>
+
+        <aside class="hero-card" aria-label="Ukážka vyhodnotenia">
+          <div class="chart-card">
+            <div class="chart-top">
+              <strong>Napätostno-deformačný diagram</strong>
+              <div class="dots"><span></span><span></span><span></span></div>
+            </div>
+            <div class="mini-chart">
+              <div class="grid-lines">
+                <div class="curve">
+                  <svg viewBox="0 0 420 240" aria-hidden="true">
+                    <path d="M10 215 C70 160, 100 92, 155 58 C215 20, 275 58, 326 98 C365 130, 392 150, 410 160" fill="none" stroke="#f2a93b" stroke-width="7" stroke-linecap="round" />
+                    <path d="M10 215 C70 160, 100 92, 155 58" fill="none" stroke="#76a9ff" stroke-width="7" stroke-linecap="round" />
+                    <circle cx="155" cy="58" r="7" fill="#fff" />
+                    <circle cx="326" cy="98" r="7" fill="#fff" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="metric-row">
+            <div class="metric"><small>Modul E</small><strong>2.9 GPa</strong></div>
+            <div class="metric"><small>σp0,2</small><strong>42 MPa</strong></div>
+            <div class="metric"><small>Vzorky</small><strong>48</strong></div>
+          </div>
+        </aside>
+      </section>
+
+      <section>
+        <div class="section-head">
+          <div>
+            <h2>Čo bude databáza obsahovať</h2>
+          </div>
+          <p>Jednoduchá štruktúra, aby sa ku každej skúške dali rýchlo nájsť namerané dáta, výsledky, fotodokumentácia a videozáznam.</p>
+        </div>
+
+        <div class="cards">
+          <article class="card">
+            <div class="icon">📊</div>
+            <h3>Excel dáta</h3>
+            <p>Surové údaje zo skúšky, spracované tabuľky a výpočty mechanických charakteristík.</p>
+          </article>
+          <article class="card">
+            <div class="icon">📈</div>
+            <h3>Grafy skúšok</h3>
+            <p>Napätostno-deformačné diagramy pre jednotlivé vzorky aj celé série materiálov.</p>
+          </article>
+          <article class="card">
+            <div class="icon">🖼️</div>
+            <h3>Fotografie</h3>
+            <p>Fotky vzoriek pred skúškou, po porušení, detail lomu a označenie skúšobných telies.</p>
+          </article>
+          <article class="card">
+            <div class="icon">🎥</div>
+            <h3>Videá</h3>
+            <p>Videozáznam priebehu skúšky pre lepšie pochopenie deformácie a spôsobu porušenia.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="databaza">
+        <div class="section-head">
+          <div>
+            <h2>Ukážka databázového prehľadu</h2>
+          </div>
+          <p>Filtrovanie podľa materiálu, orientácie tlače alebo typu vzorky zrýchli prácu študentom aj vyučujúcim.</p>
+        </div>
+
+        <div class="database-panel">
+          <div class="toolbar">
+            <input type="search" placeholder="Hľadať vzorku, materiál alebo sériu..." />
+            <select>
+              <option>Všetky materiály</option>
+              <option>PLA</option>
+              <option>PETG</option>
+              <option>Oceľ</option>
+              <option>Hliník</option>
+            </select>
+            <select>
+              <option>Všetky série</option>
+              <option>45°</option>
+              <option>90°</option>
+              <option>Kovové</option>
+            </select>
+            <button class="btn btn-primary">Filtrovať</button>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Vzorka</th>
+                  <th>Materiál</th>
+                  <th>Orientácia</th>
+                  <th>Modul E</th>
+                  <th>Medza klzu</th>
+                  <th>Medza pevnosti</th>
+                  <th>Prílohy</th>
+                  <th>Stav</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>3_PLA_45</td>
+                  <td><div class="material"><span class="badge">PLA</span> Polymér</div></td>
+                  <td>45°</td>
+                  <td>2.85 GPa</td>
+                  <td>σp0,2</td>
+                  <td>—</td>
+                  <td>Excel · Foto · Video</td>
+                  <td><span class="badge green">Spracované</span></td>
+                </tr>
+                <tr>
+                  <td>5_PETG_90</td>
+                  <td><div class="material"><span class="badge orange">PETG</span> Polymér</div></td>
+                  <td>90°</td>
+                  <td>2.10 GPa</td>
+                  <td>σp0,2</td>
+                  <td>—</td>
+                  <td>Excel · Foto</td>
+                  <td><span class="badge green">Spracované</span></td>
+                </tr>
+                <tr>
+                  <td>2_S</td>
+                  <td><div class="material"><span class="badge">S355</span> Oceľ</div></td>
+                  <td>Kovová vzorka</td>
+                  <td>210 GPa</td>
+                  <td>ReH / ReL</td>
+                  <td>Rm</td>
+                  <td>Excel · Video</td>
+                  <td><span class="badge">Na kontrolu</span></td>
+                </tr>
+                <tr>
+                  <td>2_Al</td>
+                  <td><div class="material"><span class="badge">Al</span> Hliník</div></td>
+                  <td>Kovová vzorka</td>
+                  <td>70 GPa</td>
+                  <td>σ0,2</td>
+                  <td>Rm</td>
+                  <td>Excel · Foto · Video</td>
+                  <td><span class="badge green">Spracované</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="nahravanie">
+        <div class="section-head">
+          <div>
+            <h2>Nahrávanie súborov</h2>
+          </div>
+          <p>Jedna skúška môže mať viac príloh: namerané dáta, graf, fotografie vzorky, detail lomu a video.</p>
+        </div>
+
+        <div class="upload-zone">
+          <div class="dropbox">
+            <div class="drop-icon">⬆️</div>
+            <h3>Presuň súbory sem</h3>
+            <p>Podporované: .xlsx, .csv, .jpg, .png, .mp4, .mov</p>
+            <button class="btn btn-primary">Vybrať súbory</button>
+          </div>
+
+          <div class="file-list">
+            <h3>Prílohy ku skúške</h3>
+            <div class="file-item">
+              <div><strong>3_PLA_45_data.xlsx</strong><br><span>Excel · 246 kB</span></div>
+              <span>✓</span>
+            </div>
+            <div class="file-item">
+              <div><strong>lom_PLA_45.jpg</strong><br><span>Fotografia · 1.8 MB</span></div>
+              <span>✓</span>
+            </div>
+            <div class="file-item">
+              <div><strong>skuska_PLA_45.mp4</strong><br><span>Video · 42 MB</span></div>
+              <span>✓</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="media">
+        <div class="section-head">
+          <div>
+            <h2>Fotky a videá zo skúšok</h2>
+          </div>
+          <p>Galéria pomôže rýchlo porovnať stav vzorky pred skúškou, priebeh deformácie a výsledný lom.</p>
+        </div>
+
+        <div class="gallery">
+          <div class="media big"><div class="media-label">Video priebehu ťahovej skúšky</div></div>
+          <div class="media"><div class="media-label">Vzorka pred skúškou</div></div>
+          <div class="media"><div class="media-label">Detail lomu</div></div>
+          <div class="media"><div class="media-label">Upnutie v stroji</div></div>
+          <div class="media"><div class="media-label">Označenie vzorky</div></div>
+        </div>
+      </section>
+
+      <section class="footer-cta">
+        <div>
+          <h2>Databáza pripravená na rozširovanie</h2>
+          <p>Štruktúra je navrhnutá tak, aby sa v budúcnosti dali pridávať ďalšie materiály, normy, série vzoriek a nové laboratórne merania.</p>
+        </div>
+        <a href="#" class="btn btn-light">Vytvoriť záznam</a>
+      </section>
+    </main>
+
+    <footer>
+      © 2026 MaterialLab DB · Databáza ťahových skúšok materiálov
+    </footer>
+  </div>
+</body>
+</html>
