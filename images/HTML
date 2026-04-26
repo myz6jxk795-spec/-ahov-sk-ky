@@ -1,0 +1,29 @@
+<div class="media big">
+  <img src="./images/%C5%A5ahov%C3%BD%20stroj.JPG" alt="Ťahový skúšobný stroj">
+  <div class="media-label">Ťahový skúšobný stroj</div>
+</div>
+
+<div class="media">
+  <img src="./images/hlin%C3%ADkov%C3%A9%20vzorky.jpeg" alt="Hliníkové vzorky">
+  <div class="media-label">Hliníkové vzorky</div>
+</div>
+
+<div class="media">
+  <img src="./images/Al%20vzroky%20roztrhnut%C3%A9.JPG" alt="Roztrhnuté hliníkové vzorky">
+  <div class="media-label">Roztrhnuté hliníkové vzorky</div>
+</div>
+
+<div class="media">
+  <img src="./images/oce%C4%BEov%C3%A9%20vzorky.jpeg" alt="Oceľové vzorky">
+  <div class="media-label">Oceľové vzorky</div>
+</div>
+
+<div class="media">
+  <img src="./images/oce%C4%BEov%C3%A9%20vzorky%20roztrhnut%C3%A9.JPG" alt="Roztrhnuté oceľové vzorky">
+  <div class="media-label">Roztrhnuté oceľové vzorky</div>
+</div>
+
+<div class="media">
+  <img src="./images/Plast%20vzroky%20roztrhnut%C3%A9%20spolu.JPG" alt="Roztrhnuté plastové vzorky">
+  <div class="media-label">Roztrhnuté plastové vzorky</div>
+</div>
