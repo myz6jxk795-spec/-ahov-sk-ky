@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Databáza ťahových skúšok materiálov</title>
+  <title>Ťahové skúšky - Ing. Lamperová, Biroš</title>
   <style>
     :root {
       --bg: #f4f7fb;
@@ -15,16 +15,13 @@
       --accent: #f2a93b;
       --line: #d9e2ef;
       --success: #20a67a;
-      --danger: #d64545;
       --shadow: 0 18px 45px rgba(23, 32, 51, 0.10);
       --radius: 22px;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
 
     body {
       font-family: Inter, Segoe UI, Roboto, Arial, sans-serif;
@@ -33,21 +30,14 @@
       line-height: 1.6;
     }
 
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    .page {
-      min-height: 100vh;
-    }
+    a { color: inherit; text-decoration: none; }
 
     header {
       position: sticky;
       top: 0;
       z-index: 10;
       backdrop-filter: blur(16px);
-      background: rgba(244, 247, 251, 0.86);
+      background: rgba(244, 247, 251, 0.88);
       border-bottom: 1px solid rgba(217, 226, 239, 0.75);
     }
 
@@ -58,14 +48,16 @@
       align-items: center;
       justify-content: space-between;
       padding: 16px 0;
+      gap: 22px;
     }
 
     .brand {
       display: flex;
       align-items: center;
       gap: 12px;
-      font-weight: 800;
+      font-weight: 850;
       letter-spacing: -0.03em;
+      font-size: 17px;
     }
 
     .brand-mark {
@@ -77,6 +69,7 @@
       color: white;
       background: linear-gradient(135deg, var(--primary), var(--primary-dark));
       box-shadow: 0 10px 24px rgba(36, 87, 166, 0.28);
+      flex: 0 0 auto;
     }
 
     .nav-links {
@@ -88,8 +81,11 @@
       font-weight: 650;
     }
 
-    .nav-links a:hover {
-      color: var(--primary);
+    .nav-links a:hover { color: var(--primary); }
+
+    main {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
     }
 
     .btn {
@@ -106,9 +102,7 @@
       transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
     }
 
-    .btn:hover {
-      transform: translateY(-2px);
-    }
+    .btn:hover { transform: translateY(-2px); }
 
     .btn-primary {
       background: linear-gradient(135deg, var(--primary), var(--primary-dark));
@@ -122,15 +116,10 @@
       border: 1px solid var(--line);
     }
 
-    main {
-      width: min(1180px, calc(100% - 32px));
-      margin: 0 auto;
-    }
-
     .hero {
       padding: 76px 0 54px;
       display: grid;
-      grid-template-columns: 1.08fr 0.92fr;
+      grid-template-columns: 1.06fr 0.94fr;
       gap: 42px;
       align-items: center;
     }
@@ -151,7 +140,7 @@
     }
 
     h1 {
-      font-size: clamp(38px, 6vw, 68px);
+      font-size: clamp(38px, 6vw, 66px);
       line-height: 0.98;
       letter-spacing: -0.065em;
       margin-bottom: 22px;
@@ -164,11 +153,7 @@
       margin-bottom: 28px;
     }
 
-    .hero-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
 
     .hero-card {
       background: rgba(255, 255, 255, 0.88);
@@ -180,107 +165,43 @@
       overflow: hidden;
     }
 
-    .hero-card::before {
-      content: "";
-      position: absolute;
-      inset: -90px -90px auto auto;
-      width: 220px;
-      height: 220px;
-      background: radial-gradient(circle, rgba(242, 169, 59, 0.28), transparent 68%);
-    }
-
-    .chart-card {
+    .hero-image {
+      width: 100%;
+      height: 430px;
+      object-fit: cover;
       border-radius: 24px;
-      background: #101828;
-      padding: 18px;
-      color: white;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .chart-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 18px;
-    }
-
-    .dots {
-      display: flex;
-      gap: 6px;
-    }
-
-    .dots span {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.35);
-    }
-
-    .mini-chart {
-      width: 100%;
-      aspect-ratio: 1.58;
-      border-radius: 18px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
-      border: 1px solid rgba(255,255,255,0.12);
-      padding: 18px;
-    }
-
-    .grid-lines {
-      height: 100%;
-      background-image: linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px);
-      background-size: 25% 25%;
-      border-radius: 12px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .curve {
-      position: absolute;
-      left: 7%;
-      bottom: 13%;
-      width: 82%;
-      height: 70%;
-      border-left: 4px solid transparent;
-    }
-
-    .curve svg {
-      width: 100%;
-      height: 100%;
-      overflow: visible;
-    }
-
-    .metric-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-top: 14px;
-    }
-
-    .metric {
-      background: #fff;
+      display: block;
+      background: linear-gradient(135deg, #dce8f8, #ffffff);
       border: 1px solid var(--line);
-      border-radius: 18px;
-      padding: 14px;
     }
 
-    .metric small {
-      display: block;
-      color: var(--muted);
-      font-weight: 700;
-      font-size: 12px;
-    }
-
-    .metric strong {
-      display: block;
-      font-size: 22px;
-      margin-top: 4px;
+    .image-placeholder {
+      height: 430px;
+      border-radius: 24px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 28px;
+      background:
+        linear-gradient(135deg, rgba(36,87,166,0.14), rgba(242,169,59,0.18)),
+        linear-gradient(135deg, #dce8f8, #ffffff);
+      border: 1px solid var(--line);
+      color: var(--primary-dark);
+      font-weight: 800;
+      font-size: 24px;
       letter-spacing: -0.04em;
     }
 
-    section {
-      padding: 34px 0;
+    .image-placeholder span {
+      display: block;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0;
+      margin-top: 10px;
     }
+
+    section { padding: 34px 0; }
 
     .section-head {
       display: flex;
@@ -296,10 +217,7 @@
       letter-spacing: -0.05em;
     }
 
-    .section-head p {
-      color: var(--muted);
-      max-width: 560px;
-    }
+    .section-head p { color: var(--muted); max-width: 560px; }
 
     .cards {
       display: grid;
@@ -327,16 +245,8 @@
       font-size: 21px;
     }
 
-    .card h3 {
-      font-size: 18px;
-      margin-bottom: 8px;
-      letter-spacing: -0.02em;
-    }
-
-    .card p {
-      color: var(--muted);
-      font-size: 14px;
-    }
+    .card h3 { font-size: 18px; margin-bottom: 8px; letter-spacing: -0.02em; }
+    .card p { color: var(--muted); font-size: 14px; }
 
     .database-panel {
       background: var(--card);
@@ -348,7 +258,7 @@
 
     .toolbar {
       display: grid;
-      grid-template-columns: 1fr 160px 160px auto;
+      grid-template-columns: 1fr 170px 170px;
       gap: 12px;
       padding: 18px;
       border-bottom: 1px solid var(--line);
@@ -371,15 +281,9 @@
       box-shadow: 0 0 0 4px rgba(36, 87, 166, 0.08);
     }
 
-    .table-wrap {
-      overflow-x: auto;
-    }
+    .table-wrap { overflow-x: auto; }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      min-width: 900px;
-    }
+    table { width: 100%; border-collapse: collapse; min-width: 900px; }
 
     th, td {
       padding: 16px 18px;
@@ -396,16 +300,9 @@
       background: #fbfcff;
     }
 
-    td {
-      font-size: 14px;
-      font-weight: 620;
-    }
+    td { font-size: 14px; font-weight: 620; }
 
-    .material {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+    .material { display: flex; align-items: center; gap: 10px; }
 
     .badge {
       display: inline-flex;
@@ -419,82 +316,42 @@
       color: var(--primary);
     }
 
-    .badge.green {
-      background: #e9f8f2;
-      color: #13795b;
-    }
+    .badge.green { background: #e9f8f2; color: #13795b; }
+    .badge.orange { background: #fff4df; color: #9b5d00; }
 
-    .badge.orange {
-      background: #fff4df;
-      color: #9b5d00;
-    }
-
-    .upload-zone {
+    .excel-box {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr auto;
       gap: 18px;
-      align-items: stretch;
-    }
-
-    .dropbox {
-      background: white;
-      border: 2px dashed #b9c7dc;
+      align-items: center;
+      background: #101828;
+      color: white;
       border-radius: 30px;
-      padding: 34px;
-      text-align: center;
-      transition: border-color 0.2s ease, background 0.2s ease;
+      padding: 28px;
+      box-shadow: 0 18px 45px rgba(23, 32, 51, 0.16);
     }
 
-    .dropbox:hover {
-      border-color: var(--primary);
-      background: #fbfcff;
-    }
-
-    .drop-icon {
-      width: 70px;
-      height: 70px;
-      border-radius: 24px;
-      display: grid;
-      place-items: center;
-      margin: 0 auto 18px;
-      background: linear-gradient(135deg, #eef4ff, #fff4df);
-      font-size: 32px;
-    }
-
-    .dropbox h3 {
-      font-size: 24px;
+    .excel-box h3 {
+      font-size: 27px;
+      line-height: 1.1;
       letter-spacing: -0.04em;
       margin-bottom: 8px;
     }
 
-    .dropbox p {
-      color: var(--muted);
-      margin-bottom: 18px;
-    }
+    .excel-box p { color: rgba(255,255,255,0.72); max-width: 720px; }
 
-    .file-list {
-      background: #101828;
-      color: white;
-      border-radius: 30px;
-      padding: 24px;
-    }
-
-    .file-item {
-      display: flex;
+    .file-pill {
+      display: inline-flex;
+      gap: 8px;
       align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      padding: 14px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.12);
-    }
-
-    .file-item:last-child {
-      border-bottom: 0;
-    }
-
-    .file-item span {
-      color: rgba(255,255,255,0.68);
+      margin-top: 14px;
+      padding: 8px 12px;
+      border: 1px solid rgba(255,255,255,0.16);
+      background: rgba(255,255,255,0.07);
+      border-radius: 999px;
+      color: rgba(255,255,255,0.86);
       font-size: 13px;
+      font-weight: 750;
     }
 
     .gallery {
@@ -513,9 +370,14 @@
       box-shadow: 0 12px 28px rgba(23, 32, 51, 0.06);
     }
 
-    .media.big {
-      grid-row: span 2;
-      min-height: 456px;
+    .media.big { grid-row: span 2; min-height: 456px; }
+
+    .media img,
+    .media video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
     }
 
     .media::before {
@@ -525,6 +387,7 @@
       border-radius: 22px;
       border: 1px solid rgba(36, 87, 166, 0.18);
       background: linear-gradient(135deg, rgba(36,87,166,0.10), rgba(242,169,59,0.10));
+      pointer-events: none;
     }
 
     .media-label {
@@ -558,11 +421,7 @@
       letter-spacing: -0.05em;
     }
 
-    .footer-cta p {
-      color: rgba(255,255,255,0.78);
-      max-width: 640px;
-      margin-top: 8px;
-    }
+    .footer-cta p { color: rgba(255,255,255,0.78); max-width: 640px; margin-top: 8px; }
 
     footer {
       border-top: 1px solid var(--line);
@@ -573,300 +432,238 @@
     }
 
     @media (max-width: 980px) {
-      .hero,
-      .upload-zone {
-        grid-template-columns: 1fr;
-      }
-
-      .cards {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .toolbar {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      .gallery {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      .media.big {
-        grid-column: 1 / -1;
-        min-height: 320px;
-      }
+      .hero { grid-template-columns: 1fr; }
+      .cards { grid-template-columns: repeat(2, 1fr); }
+      .toolbar { grid-template-columns: 1fr 1fr; }
+      .gallery { grid-template-columns: 1fr 1fr; }
+      .media.big { grid-column: 1 / -1; min-height: 320px; }
+      .excel-box { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 680px) {
-      .nav-links {
-        display: none;
-      }
-
-      .cards,
-      .toolbar,
-      .gallery,
-      .metric-row {
-        grid-template-columns: 1fr;
-      }
-
-      .hero {
-        padding-top: 48px;
-      }
-
-      .section-head,
-      .footer-cta {
-        align-items: start;
-        flex-direction: column;
-      }
-
-      .dropbox,
-      .footer-cta {
-        padding: 24px;
-      }
+      .nav { align-items: flex-start; }
+      .nav-links { display: none; }
+      .brand { font-size: 15px; }
+      .cards, .toolbar, .gallery { grid-template-columns: 1fr; }
+      .hero { padding-top: 48px; }
+      .section-head, .footer-cta { align-items: start; flex-direction: column; }
+      .footer-cta, .excel-box { padding: 24px; }
     }
   </style>
 </head>
 <body>
-  <div class="page">
-    <header>
-      <nav class="nav">
-        <a href="#" class="brand" aria-label="Domov">
-          <span class="brand-mark">σ</span>
-          <span>MaterialLab DB</span>
-        </a>
-        <div class="nav-links">
-          <a href="#databaza">Databáza</a>
-          <a href="#nahravanie">Nahrávanie</a>
-          <a href="#media">Fotky a videá</a>
-          <a href="#" class="btn btn-primary">Pridať skúšku</a>
-        </div>
-      </nav>
-    </header>
+  <header>
+    <nav class="nav">
+      <a href="#" class="brand" aria-label="Domov">
+        <span class="brand-mark">σ</span>
+        <span>Ťahové skúšky - Ing. Lamperová, Biroš</span>
+      </a>
+      <div class="nav-links">
+        <a href="#databaza">Databáza</a>
+        <a href="#excel">Excel súbor</a>
+        <a href="#media">Fotky a videá</a>
+      </div>
+    </nav>
+  </header>
 
-    <main>
-      <section class="hero">
+  <main>
+    <section class="hero">
+      <div>
+        <div class="eyebrow">⚙️ Databáza mechanických vlastností materiálov</div>
+        <h1>Prehľadné výsledky ťahových skúšok na jednom mieste.</h1>
+        <p>
+          Stránka slúži ako jednoduchý prehľad skúšobných vzoriek, nameraných dát, fotografií a videí z ťahových skúšok materiálov. Súčasťou stránky je aj priložený Excel súbor s databázou mechanických vlastností.
+        </p>
+        <div class="hero-actions">
+          <a href="#databaza" class="btn btn-primary">Pozrieť databázu</a>
+          <a href="Databaza_mechanickych_vlastnosti.xlsx" class="btn btn-light" download>Stiahnuť Excel</a>
+        </div>
+      </div>
+
+      <aside class="hero-card" aria-label="Úvodný obrázok">
+        <!-- Tu si vieš vložiť vlastný úvodný obrázok.
+             1. Daj obrázok do priečinka obrazky/
+             2. Premenuj ho napríklad na uvod.jpg
+             3. Vymeň blok nižšie za:
+             <img class="hero-image" src="obrazky/uvod.jpg" alt="Ťahová skúška materiálu">
+        -->
+        <div class="image-placeholder">
+          Úvodný obrázok ťahovej skúšky
+          <span>Sem vlož napr. fotku skúšobného stroja, vzorky alebo laboratória</span>
+        </div>
+      </aside>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <div><h2>Obsah databázy</h2></div>
+        <p>Stránka je navrhnutá tak, aby sa ku každej skúške dali rýchlo nájsť namerané dáta, výsledky, fotodokumentácia a videozáznam.</p>
+      </div>
+
+      <div class="cards">
+        <article class="card">
+          <div class="icon">📊</div>
+          <h3>Excel dáta</h3>
+          <p>Surové údaje zo skúšky, spracované tabuľky a výpočty mechanických charakteristík.</p>
+        </article>
+        <article class="card">
+          <div class="icon">📈</div>
+          <h3>Grafy skúšok</h3>
+          <p>Napätostno-deformačné diagramy pre jednotlivé vzorky aj celé série materiálov.</p>
+        </article>
+        <article class="card">
+          <div class="icon">🖼️</div>
+          <h3>Fotografie</h3>
+          <p>Fotky vzoriek pred skúškou, po porušení, detail lomu a označenie skúšobných telies.</p>
+        </article>
+        <article class="card">
+          <div class="icon">🎥</div>
+          <h3>Videá</h3>
+          <p>Videozáznam priebehu skúšky pre lepšie pochopenie deformácie a spôsobu porušenia.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="excel">
+      <div class="excel-box">
         <div>
-          <div class="eyebrow">⚙️ Databáza materiálových charakteristík</div>
-          <h1>Prehľadné výsledky ťahových skúšok na jednom mieste.</h1>
+          <h3>Priložený Excel súbor databázy</h3>
           <p>
-            Webová databáza pre ukladanie Excel súborov, fotografií, videí a vyhodnotených údajov zo skúšok materiálov. Vhodná pre PLA, PETG, oceľ, hliník a ďalšie vzorky.
+            Tento odkaz smeruje na súbor <strong>Databaza_mechanickych_vlastnosti.xlsx</strong>. Aby odkaz fungoval aj mimo tejto ukážky, Excel musí byť uložený v rovnakom priečinku ako tento HTML súbor.
           </p>
-          <div class="hero-actions">
-            <a href="#nahravanie" class="btn btn-primary">Nahrať nové dáta</a>
-            <a href="#databaza" class="btn btn-light">Pozrieť databázu</a>
-          </div>
+          <div class="file-pill">📎 Databaza_mechanickych_vlastnosti.xlsx</div>
+        </div>
+        <a href="Databaza_mechanickych_vlastnosti.xlsx" class="btn btn-light" download>Stiahnuť Excel súbor</a>
+      </div>
+    </section>
+
+    <section id="databaza">
+      <div class="section-head">
+        <div><h2>Ukážka databázového prehľadu</h2></div>
+        <p>Filtrovanie podľa materiálu, orientácie tlače alebo typu vzorky zrýchli prácu pri vyhodnocovaní skúšok.</p>
+      </div>
+
+      <div class="database-panel">
+        <div class="toolbar">
+          <input type="search" placeholder="Hľadať vzorku, materiál alebo sériu..." />
+          <select>
+            <option>Všetky materiály</option>
+            <option>PLA</option>
+            <option>PETG</option>
+            <option>Oceľ</option>
+            <option>Hliník</option>
+          </select>
+          <select>
+            <option>Všetky série</option>
+            <option>45°</option>
+            <option>90°</option>
+            <option>Kovové</option>
+          </select>
         </div>
 
-        <aside class="hero-card" aria-label="Ukážka vyhodnotenia">
-          <div class="chart-card">
-            <div class="chart-top">
-              <strong>Napätostno-deformačný diagram</strong>
-              <div class="dots"><span></span><span></span><span></span></div>
-            </div>
-            <div class="mini-chart">
-              <div class="grid-lines">
-                <div class="curve">
-                  <svg viewBox="0 0 420 240" aria-hidden="true">
-                    <path d="M10 215 C70 160, 100 92, 155 58 C215 20, 275 58, 326 98 C365 130, 392 150, 410 160" fill="none" stroke="#f2a93b" stroke-width="7" stroke-linecap="round" />
-                    <path d="M10 215 C70 160, 100 92, 155 58" fill="none" stroke="#76a9ff" stroke-width="7" stroke-linecap="round" />
-                    <circle cx="155" cy="58" r="7" fill="#fff" />
-                    <circle cx="326" cy="98" r="7" fill="#fff" />
-                  </svg>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="metric-row">
-            <div class="metric"><small>Modul E</small><strong>2.9 GPa</strong></div>
-            <div class="metric"><small>σp0,2</small><strong>42 MPa</strong></div>
-            <div class="metric"><small>Vzorky</small><strong>48</strong></div>
-          </div>
-        </aside>
-      </section>
-
-      <section>
-        <div class="section-head">
-          <div>
-            <h2>Čo bude databáza obsahovať</h2>
-          </div>
-          <p>Jednoduchá štruktúra, aby sa ku každej skúške dali rýchlo nájsť namerané dáta, výsledky, fotodokumentácia a videozáznam.</p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Vzorka</th>
+                <th>Materiál</th>
+                <th>Orientácia / typ</th>
+                <th>Modul E</th>
+                <th>Medza klzu</th>
+                <th>Medza pevnosti</th>
+                <th>Prílohy</th>
+                <th>Stav</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>3_PLA_45</td>
+                <td><div class="material"><span class="badge">PLA</span> Polymér</div></td>
+                <td>45°</td>
+                <td>—</td>
+                <td>σp0,2</td>
+                <td>—</td>
+                <td>Excel · Foto · Video</td>
+                <td><span class="badge green">Spracované</span></td>
+              </tr>
+              <tr>
+                <td>5_PETG_90</td>
+                <td><div class="material"><span class="badge orange">PETG</span> Polymér</div></td>
+                <td>90°</td>
+                <td>—</td>
+                <td>σp0,2</td>
+                <td>—</td>
+                <td>Excel · Foto</td>
+                <td><span class="badge green">Spracované</span></td>
+              </tr>
+              <tr>
+                <td>2_S</td>
+                <td><div class="material"><span class="badge">S355</span> Oceľ</div></td>
+                <td>Kovová vzorka</td>
+                <td>—</td>
+                <td>ReH / ReL</td>
+                <td>Rm</td>
+                <td>Excel · Video</td>
+                <td><span class="badge">Na kontrolu</span></td>
+              </tr>
+              <tr>
+                <td>2_Al</td>
+                <td><div class="material"><span class="badge">Al</span> Hliník</div></td>
+                <td>Kovová vzorka</td>
+                <td>—</td>
+                <td>σ0,2</td>
+                <td>Rm</td>
+                <td>Excel · Foto · Video</td>
+                <td><span class="badge green">Spracované</span></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
+      </div>
+    </section>
 
-        <div class="cards">
-          <article class="card">
-            <div class="icon">📊</div>
-            <h3>Excel dáta</h3>
-            <p>Surové údaje zo skúšky, spracované tabuľky a výpočty mechanických charakteristík.</p>
-          </article>
-          <article class="card">
-            <div class="icon">📈</div>
-            <h3>Grafy skúšok</h3>
-            <p>Napätostno-deformačné diagramy pre jednotlivé vzorky aj celé série materiálov.</p>
-          </article>
-          <article class="card">
-            <div class="icon">🖼️</div>
-            <h3>Fotografie</h3>
-            <p>Fotky vzoriek pred skúškou, po porušení, detail lomu a označenie skúšobných telies.</p>
-          </article>
-          <article class="card">
-            <div class="icon">🎥</div>
-            <h3>Videá</h3>
-            <p>Videozáznam priebehu skúšky pre lepšie pochopenie deformácie a spôsobu porušenia.</p>
-          </article>
+    <section id="media">
+      <div class="section-head">
+        <div><h2>Fotky a videá zo skúšok</h2></div>
+        <p>Do jednotlivých blokov môžeš vložiť vlastné fotografie a videá zo skúšobného stroja, vzoriek a detailov lomu.</p>
+      </div>
+
+      <div class="gallery">
+        <div class="media big">
+          <!-- Príklad videa:
+          <video controls>
+            <source src="videa/pla_45_skuska.mp4" type="video/mp4">
+          </video>
+          -->
+          <div class="media-label">Video priebehu ťahovej skúšky</div>
         </div>
-      </section>
-
-      <section id="databaza">
-        <div class="section-head">
-          <div>
-            <h2>Ukážka databázového prehľadu</h2>
-          </div>
-          <p>Filtrovanie podľa materiálu, orientácie tlače alebo typu vzorky zrýchli prácu študentom aj vyučujúcim.</p>
+        <div class="media">
+          <!-- Príklad obrázka: <img src="obrazky/vzorka_pred_skusku.jpg" alt="Vzorka pred skúškou"> -->
+          <div class="media-label">Vzorka pred skúškou</div>
         </div>
-
-        <div class="database-panel">
-          <div class="toolbar">
-            <input type="search" placeholder="Hľadať vzorku, materiál alebo sériu..." />
-            <select>
-              <option>Všetky materiály</option>
-              <option>PLA</option>
-              <option>PETG</option>
-              <option>Oceľ</option>
-              <option>Hliník</option>
-            </select>
-            <select>
-              <option>Všetky série</option>
-              <option>45°</option>
-              <option>90°</option>
-              <option>Kovové</option>
-            </select>
-            <button class="btn btn-primary">Filtrovať</button>
-          </div>
-
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Vzorka</th>
-                  <th>Materiál</th>
-                  <th>Orientácia</th>
-                  <th>Modul E</th>
-                  <th>Medza klzu</th>
-                  <th>Medza pevnosti</th>
-                  <th>Prílohy</th>
-                  <th>Stav</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>3_PLA_45</td>
-                  <td><div class="material"><span class="badge">PLA</span> Polymér</div></td>
-                  <td>45°</td>
-                  <td>2.85 GPa</td>
-                  <td>σp0,2</td>
-                  <td>—</td>
-                  <td>Excel · Foto · Video</td>
-                  <td><span class="badge green">Spracované</span></td>
-                </tr>
-                <tr>
-                  <td>5_PETG_90</td>
-                  <td><div class="material"><span class="badge orange">PETG</span> Polymér</div></td>
-                  <td>90°</td>
-                  <td>2.10 GPa</td>
-                  <td>σp0,2</td>
-                  <td>—</td>
-                  <td>Excel · Foto</td>
-                  <td><span class="badge green">Spracované</span></td>
-                </tr>
-                <tr>
-                  <td>2_S</td>
-                  <td><div class="material"><span class="badge">S355</span> Oceľ</div></td>
-                  <td>Kovová vzorka</td>
-                  <td>210 GPa</td>
-                  <td>ReH / ReL</td>
-                  <td>Rm</td>
-                  <td>Excel · Video</td>
-                  <td><span class="badge">Na kontrolu</span></td>
-                </tr>
-                <tr>
-                  <td>2_Al</td>
-                  <td><div class="material"><span class="badge">Al</span> Hliník</div></td>
-                  <td>Kovová vzorka</td>
-                  <td>70 GPa</td>
-                  <td>σ0,2</td>
-                  <td>Rm</td>
-                  <td>Excel · Foto · Video</td>
-                  <td><span class="badge green">Spracované</span></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+        <div class="media">
+          <div class="media-label">Detail lomu</div>
         </div>
-      </section>
-
-      <section id="nahravanie">
-        <div class="section-head">
-          <div>
-            <h2>Nahrávanie súborov</h2>
-          </div>
-          <p>Jedna skúška môže mať viac príloh: namerané dáta, graf, fotografie vzorky, detail lomu a video.</p>
+        <div class="media">
+          <div class="media-label">Upnutie v stroji</div>
         </div>
-
-        <div class="upload-zone">
-          <div class="dropbox">
-            <div class="drop-icon">⬆️</div>
-            <h3>Presuň súbory sem</h3>
-            <p>Podporované: .xlsx, .csv, .jpg, .png, .mp4, .mov</p>
-            <button class="btn btn-primary">Vybrať súbory</button>
-          </div>
-
-          <div class="file-list">
-            <h3>Prílohy ku skúške</h3>
-            <div class="file-item">
-              <div><strong>3_PLA_45_data.xlsx</strong><br><span>Excel · 246 kB</span></div>
-              <span>✓</span>
-            </div>
-            <div class="file-item">
-              <div><strong>lom_PLA_45.jpg</strong><br><span>Fotografia · 1.8 MB</span></div>
-              <span>✓</span>
-            </div>
-            <div class="file-item">
-              <div><strong>skuska_PLA_45.mp4</strong><br><span>Video · 42 MB</span></div>
-              <span>✓</span>
-            </div>
-          </div>
+        <div class="media">
+          <div class="media-label">Označenie vzorky</div>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <section id="media">
-        <div class="section-head">
-          <div>
-            <h2>Fotky a videá zo skúšok</h2>
-          </div>
-          <p>Galéria pomôže rýchlo porovnať stav vzorky pred skúškou, priebeh deformácie a výsledný lom.</p>
-        </div>
+    <section class="footer-cta">
+      <div>
+        <h2>Databáza pripravená na rozširovanie</h2>
+        <p>V budúcnosti môžeš pridať ďalšie materiály, normy, série vzoriek, grafy, fotografie a videozáznamy z laboratórnych meraní.</p>
+      </div>
+      <a href="Databaza_mechanickych_vlastnosti.xlsx" class="btn btn-light" download>Otvoriť databázu</a>
+    </section>
+  </main>
 
-        <div class="gallery">
-          <div class="media big"><div class="media-label">Video priebehu ťahovej skúšky</div></div>
-          <div class="media"><div class="media-label">Vzorka pred skúškou</div></div>
-          <div class="media"><div class="media-label">Detail lomu</div></div>
-          <div class="media"><div class="media-label">Upnutie v stroji</div></div>
-          <div class="media"><div class="media-label">Označenie vzorky</div></div>
-        </div>
-      </section>
-
-      <section class="footer-cta">
-        <div>
-          <h2>Databáza pripravená na rozširovanie</h2>
-          <p>Štruktúra je navrhnutá tak, aby sa v budúcnosti dali pridávať ďalšie materiály, normy, série vzoriek a nové laboratórne merania.</p>
-        </div>
-        <a href="#" class="btn btn-light">Vytvoriť záznam</a>
-      </section>
-    </main>
-
-    <footer>
-      © 2026 MaterialLab DB · Databáza ťahových skúšok materiálov
-    </footer>
-  </div>
+  <footer>
+    © 2026 Ťahové skúšky - Ing. Lamperová, Biroš
+  </footer>
 </body>
 </html>
